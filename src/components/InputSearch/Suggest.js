@@ -36,7 +36,14 @@ const Suggest = ({
                 key={index}
                 className='px-2 hover:bg-gray-200 border-b cursor-pointer hover:text-green-500'
               >
-                <Link to={`/movie/${slug}`}>
+                <Link
+                  to={{
+                    pathname: `/movie/${slug}`,
+                    state: {
+                      movie: suggest,
+                    },
+                  }}
+                >
                   <div className='flex py-2'>
                     <div className='flex h-10 w-10 relative'>
                       <img src={imgSrc} alt={suggest.Title} />

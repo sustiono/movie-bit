@@ -1,7 +1,7 @@
 import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
 
-import { Home, SearchResult } from "../pages";
+import { Home, SearchResult, MovieDetail } from "../pages";
 import { Header, Footer, NotFound } from "../components";
 import { history } from "../utils";
 
@@ -21,7 +21,7 @@ const Routes = () => {
           </Route>
 
           <Route exact path='/movie/:title'>
-            <div className='flex h-full'>Detail Movie</div>
+            <MovieDetail />
           </Route>
 
           <Route>

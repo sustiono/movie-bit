@@ -7,16 +7,17 @@ import {
   onSearcSuggestions,
   setSuggestions,
   onSetKeyword,
+  onSearchMovies,
 } from "../../store/actions/search";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { suggestions, keyword, searchStatus } = useSelector(
+  const { suggestions, results, keyword, searchStatus } = useSelector(
     (state) => state.search
   );
   const delayedOnChange = useCallback(
     _.debounce((q) => {
-      if (!q.length || q.length >= 3) dispatch(onSearcSuggestions(q));
+      if (q.length >= 3) dispatch(onSearcSuggestions(q));
     }, 500),
     []
   );
@@ -27,6 +28,9 @@ const Home = () => {
     }
     if (suggestions) {
       dispatch(setSuggestions(null));
+    }
+    if (results) {
+      dispatch(onSearchMovies(null));
     }
     return () => {
       return;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import BeatLoader from "react-spinners/BeatLoader";
 
@@ -67,6 +67,7 @@ const SearchResult = () => {
         className='px-5 my-10 sm:grid md:grid-cols-2 xl:grid-cols-5 min-h-full'
       >
         {results?.Search?.map((result, index) => {
+          const slug = result.Title.toLowerCase().replaceAll(" ", "-");
           const imgSrc = result.Poster.includes("http")
             ? result.Poster
             : "https://via.placeholder.com/300x420.png";
@@ -77,7 +78,14 @@ const SearchResult = () => {
             >
               <img src={imgSrc} alt={result.Title} className='m-auto xl:m-0' />
               <h2 className='mt-1 text-2xl md:text-xl text-green-500 transition-all duration-100 ease-in-out group-hover:font-bold group-hover:text-green-500 hover:underline'>
-                {`${result.Title} (${result.Year})`}
+                <Link
+                  to={{
+                    pathname: `/movie/${slug}`,
+                    state: {
+                      movie: result,
+                    },
+                  }}
+                >{`${result.Title} (${result.Year})`}</Link>
               </h2>
             </div>
           );

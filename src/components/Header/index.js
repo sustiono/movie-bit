@@ -18,7 +18,7 @@ const Header = () => {
 
   const delayedOnChange = useCallback(
     _.debounce((q) => {
-      if (!q.length || q.length >= 3) dispatch(onSearcSuggestions(q));
+      if (q.length >= 3) dispatch(onSearcSuggestions(q));
     }, 500),
     []
   );

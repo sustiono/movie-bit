@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import MovieNight from "../../assets/images/movie-night.png";
 import Suggest from "./Suggest";
 import { history } from "../../utils";
-import { onSearchMovies } from "../../store/actions/search";
+import { onSearchMovies, onSearcSuggestions } from "../../store/actions/search";
 
 const InputSearch = ({
   onChange,
@@ -57,6 +57,8 @@ const InputSearch = ({
           placeholder='Type title...'
           className='flex-grow focus:outline-none text-gray-500'
           onFocus={(e) => {
+            if (key.length >= 3 && !suggestions)
+              dispatch(onSearcSuggestions(key));
             setTimeout(() => {
               setShowSuggest(true);
             }, 100);
@@ -72,7 +74,7 @@ const InputSearch = ({
           }}
         />
       </div>
-      {key && (
+      {key.length >= 3 && (
         <Suggest
           showSuggest={showSuggest}
           suggestions={suggestions}
