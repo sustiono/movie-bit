@@ -1,20 +1,45 @@
+import { useState, useEffect, useRef } from "react";
 import { SearchIcon } from "@heroicons/react/outline";
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import MovieNight from "../../assets/images/movie-night.png";
 import Suggest from "./Suggest";
-
 import { history } from "../../utils";
+import { onSearchMovies } from "../../store/actions/search";
 
 const InputSearch = ({
   onChange,
   keyword,
   searchStatus,
-  results,
+  suggestions,
   showImage = true,
   formClass = "mt-16 px-5",
 }) => {
+  const dispatch = useDispatch();
+  const [key, setKey] = useState(keyword);
+  const [showSuggest, setShowSuggest] = useState(false);
+
+  const location = useLocation();
+  const targetRef = useRef();
+
+  useEffect(() => {
+    setKey(keyword);
+    return () => {
+      return;
+    };
+  }, [keyword]);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    if (keyword.length >= 3) history.push(`/search/${keyword}`);
+    if (key.length >= 3) {
+      if (location.pathname !== `/search/${key}`) {
+        dispatch(onSearchMovies(key));
+        setShowSuggest(false);
+        targetRef.current.blur();
+      }
+      history.push(`/search/${key}`);
+    }
   };
 
   return (
@@ -27,12 +52,34 @@ const InputSearch = ({
         <SearchIcon className='h-5 mr-3' />
         <input
           type='text'
+          value={key}
+          ref={targetRef}
           placeholder='Type title...'
           className='flex-grow focus:outline-none text-gray-500'
-          onChange={onChange}
+          onFocus={(e) => {
+            setTimeout(() => {
+              setShowSuggest(true);
+            }, 100);
+          }}
+          onBlur={(e) => {
+            setTimeout(() => {
+              setShowSuggest(false);
+            }, 100);
+          }}
+          onChange={(e) => {
+            setKey(e.target.value);
+            onChange(e);
+          }}
         />
       </div>
-      {keyword && <Suggest searchStatus={searchStatus} results={results} />}
+      {key && (
+        <Suggest
+          showSuggest={showSuggest}
+          suggestions={suggestions}
+          searchStatus={searchStatus}
+          topCls={showImage ? "top-52" : "top-10"}
+        />
+      )}
     </form>
   );
 };

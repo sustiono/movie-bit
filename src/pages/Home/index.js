@@ -4,19 +4,19 @@ import _ from "lodash";
 
 import { InputSearch } from "../../components";
 import {
-  onSearchMovies,
-  setResults,
+  onSearcSuggestions,
+  setSuggestions,
   onSetKeyword,
 } from "../../store/actions/search";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { results, keyword, searchStatus } = useSelector(
+  const { suggestions, keyword, searchStatus } = useSelector(
     (state) => state.search
   );
   const delayedOnChange = useCallback(
     _.debounce((q) => {
-      if (!q.length || q.length >= 3) dispatch(onSearchMovies(q));
+      if (!q.length || q.length >= 3) dispatch(onSearcSuggestions(q));
     }, 500),
     []
   );
@@ -25,8 +25,8 @@ const Home = () => {
     if (keyword) {
       dispatch(onSetKeyword(""));
     }
-    if (results) {
-      dispatch(setResults(null));
+    if (suggestions) {
+      dispatch(setSuggestions(null));
     }
     return () => {
       return;
@@ -37,7 +37,7 @@ const Home = () => {
     <>
       <InputSearch
         keyword={keyword}
-        results={results}
+        suggestions={suggestions}
         searchStatus={searchStatus}
         onChange={(e) => delayedOnChange(e.target.value)}
       />

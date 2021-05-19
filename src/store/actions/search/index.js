@@ -23,7 +23,14 @@ const setResults = (results) => {
   };
 };
 
-const onSearchMovies = (keyword) => {
+const setSuggestions = (suggestions) => {
+  return {
+    suggestions,
+    type: actionTypes.SEARCH.SET_SUGGESTIONS,
+  };
+};
+
+const onSearcSuggestions = (keyword) => {
   return async (dispatch, getState) => {
     try {
       batch(() => {
@@ -36,12 +43,30 @@ const onSearchMovies = (keyword) => {
           const { data } = response;
           const results = data.Error ? null : data;
           batch(() => {
-            dispatch(setResults(results));
+            dispatch(setSuggestions(results));
             dispatch(onSetSearchStatus(false));
           });
         })
         .catch(function (error) {
           dispatch(onSetSearchStatus(false));
+          console.log("Error search movie:", error);
+        });
+    } catch (error) {
+      console.log("Error search movie:", error);
+    }
+  };
+};
+
+const onSearchMovies = (keyword) => {
+  return async (dispatch, getState) => {
+    try {
+      getMovies(keyword)
+        .then(function (response) {
+          const { data } = response;
+          const results = data.Error ? null : data;
+          dispatch(setResults(results));
+        })
+        .catch(function (error) {
           console.log("Error search movie:", error);
         });
     } catch (error) {
@@ -87,4 +112,11 @@ const onFetchNext = (keyword, page) => {
   };
 };
 
-export { onSearchMovies, onSetKeyword, setResults, onFetchNext };
+export {
+  onSearchMovies,
+  onSetKeyword,
+  setResults,
+  onFetchNext,
+  onSearcSuggestions,
+  setSuggestions,
+};

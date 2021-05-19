@@ -1,9 +1,27 @@
+import { useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import _ from "lodash";
+
 import InputSearch from "../InputSearch";
+import { onSearcSuggestions } from "../../store/actions/search";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const { suggestions, searchStatus } = useSelector((state) => state.search);
+
   const location = useLocation();
   const inputSearchCls = location.pathname === "/" ? "hidden" : "flex";
+  const keyword = location.pathname.includes("/movie/")
+    ? ""
+    : location.pathname.split("/").pop();
+
+  const delayedOnChange = useCallback(
+    _.debounce((q) => {
+      if (!q.length || q.length >= 3) dispatch(onSearcSuggestions(q));
+    }, 500),
+    []
+  );
 
   return (
     <div className='flex flex-col w-full items-center border-b border-gray-100'>
@@ -17,12 +35,12 @@ const Header = () => {
 
         <div className={`${inputSearchCls} flex w-full h-10`}>
           <InputSearch
-            keyword={""}
+            keyword={keyword}
             showImage={false}
             formClass='mt-0'
-            results={null}
-            searchStatus={false}
-            onChange={(e) => console.log(e.target.value)}
+            suggestions={suggestions}
+            searchStatus={searchStatus}
+            onChange={(e) => delayedOnChange(e.target.value)}
           />
         </div>
 
