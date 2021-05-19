@@ -1,29 +1,32 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import { InputSearch } from "../../components";
 import {
   onSearchMovies,
-  setSuggestions,
+  setResults,
   onSetKeyword,
 } from "../../store/actions/search";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { suggestions, keyword: kw } = useSelector((state) => state.search);
-  const [keyword, setKeyword] = useState("");
+  const { results, keyword, searchStatus } = useSelector(
+    (state) => state.search
+  );
   const delayedOnChange = useCallback(
-    _.debounce((q) => dispatch(onSearchMovies(q)), 500),
+    _.debounce((q) => {
+      if (!q.length || q.length >= 3) dispatch(onSearchMovies(q));
+    }, 500),
     []
   );
 
   useEffect(() => {
-    if (kw) {
+    if (keyword) {
       dispatch(onSetKeyword(""));
     }
-    if (suggestions) {
-      dispatch(setSuggestions(null));
+    if (results) {
+      dispatch(setResults(null));
     }
     return () => {
       return;
@@ -32,7 +35,12 @@ const Home = () => {
 
   return (
     <>
-      <InputSearch onChange={(e) => delayedOnChange(e.target.value)} />
+      <InputSearch
+        keyword={keyword}
+        results={results}
+        searchStatus={searchStatus}
+        onChange={(e) => delayedOnChange(e.target.value)}
+      />
     </>
   );
 };

@@ -3,8 +3,8 @@ import { actionTypes } from "../../constanta";
 const initialState = {
   keyword: "",
   searchStatus: false,
-  isEmpty: false,
-  suggestions: null,
+  results: null,
+  onPaging: false,
 };
 let newState;
 const search = (state = initialState, action) => {
@@ -15,8 +15,11 @@ const search = (state = initialState, action) => {
     case actionTypes.SEARCH.SET_SEARCH_STATUS:
       newState = { ...state, searchStatus: action.searchStatus };
       return newState;
-    case actionTypes.SEARCH.SET_SUGGESTION:
-      newState = { ...state, suggestions: action.suggestions };
+    case actionTypes.SEARCH.SET_RESULTS:
+      newState = { ...state, results: action.results };
+      return newState;
+    case actionTypes.SEARCH.SET_ON_PAGING:
+      newState = { ...state, onPaging: action.onPaging };
       return newState;
     default:
       return state;

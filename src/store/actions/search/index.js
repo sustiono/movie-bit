@@ -1,4 +1,3 @@
-import axios from "axios";
 import { batch } from "react-redux";
 import { actionTypes } from "../../constanta";
 import { getMovies } from "../../../api";
@@ -17,10 +16,10 @@ const onSetKeyword = (keyword) => {
   };
 };
 
-const setSuggestions = (suggestions) => {
+const setResults = (results) => {
   return {
-    suggestions,
-    type: actionTypes.SEARCH.SET_SUGGESTION,
+    results,
+    type: actionTypes.SEARCH.SET_RESULTS,
   };
 };
 
@@ -35,9 +34,9 @@ const onSearchMovies = (keyword) => {
       getMovies(keyword)
         .then(function (response) {
           const { data } = response;
-          const suggestions = data.Error ? null : data;
+          const results = data.Error ? null : data;
           batch(() => {
-            dispatch(setSuggestions(suggestions));
+            dispatch(setResults(results));
             dispatch(onSetSearchStatus(false));
           });
         })
@@ -51,4 +50,41 @@ const onSearchMovies = (keyword) => {
   };
 };
 
-export { onSearchMovies, onSetKeyword, setSuggestions };
+const setOnPaging = (onPaging) => {
+  return {
+    onPaging,
+    type: actionTypes.SEARCH.SET_ON_PAGING,
+  };
+};
+
+const onFetchNext = (keyword, page) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(setOnPaging(true));
+      getMovies(keyword, page)
+        .then(function (response) {
+          const { data } = response;
+          const currentResults = getState().search.results;
+          let results;
+          if (data.Search) {
+            results = {
+              ...currentResults,
+              Search: [...currentResults.Search].concat(data.Search),
+            };
+          }
+          batch(() => {
+            dispatch(setResults(results));
+            dispatch(setOnPaging(false));
+          });
+        })
+        .catch(function (error) {
+          dispatch(setOnPaging(false));
+          console.log("Error fetch movie:", error);
+        });
+    } catch (error) {
+      console.log("Error fetch movie:", error);
+    }
+  };
+};
+
+export { onSearchMovies, onSetKeyword, setResults, onFetchNext };

@@ -1,12 +1,13 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 
-import Home from "../pages/Home";
+import { Home, SearchResult } from "../pages";
 import { Header, Footer, NotFound } from "../components";
+import { history } from "../utils";
 
 const Routes = () => {
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <div className='flex flex-col items-center min-h-screen h-full max-w-screen-xl m-auto'>
         <Header />
 
@@ -16,7 +17,7 @@ const Routes = () => {
           </Route>
 
           <Route exact path='/search/:keyword'>
-            <div>Search Result</div>
+            <SearchResult />
           </Route>
 
           <Route exact path='/movie/:title'>
@@ -30,7 +31,7 @@ const Routes = () => {
 
         <Footer />
       </div>
-    </BrowserRouter>
+    </Router>
   );
 };
 
