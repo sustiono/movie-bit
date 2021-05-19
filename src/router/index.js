@@ -1,13 +1,15 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import { Footer } from "../components";
 import Home from "../pages/Home";
+import { Header, Footer, NotFound } from "../components";
 
 const Routes = () => {
   return (
     <BrowserRouter>
-      <div className='flex flex-col items-center justify-center min-h-screen h-full max-w-screen-xl m-auto'>
+      <div className='flex flex-col items-center min-h-screen h-full max-w-screen-xl m-auto'>
+        <Header />
+
         <Switch>
           <Route exact path='/'>
             <Home />
@@ -18,15 +20,14 @@ const Routes = () => {
           </Route>
 
           <Route exact path='/movie/:title'>
-            <div>Detail Movie</div>
+            <div className='flex h-full'>Detail Movie</div>
           </Route>
 
           <Route>
-            <div className=''>
-              <h1>404 - Not Found!</h1>
-            </div>
+            <NotFound />
           </Route>
         </Switch>
+
         <Footer />
       </div>
     </BrowserRouter>

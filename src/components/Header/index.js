@@ -1,9 +1,13 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <div className='flex flex-col w-full items-center border-b border-gray-100'>
       <div className='flex w-full justify-between items-center h-16 px-5'>
         <h2 className='w-full font-bold font-serif text-2xl text-green-500'>
-          MOVIEbit
+          <Link to='/' className='cursor-pointer tracking-wide'>
+            MOVIEbit
+          </Link>
         </h2>
 
         <div className='w-full flex justify-end items-center cursor-pointer group'>
