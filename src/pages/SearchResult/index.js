@@ -1,7 +1,14 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import BeatLoader from "react-spinners/BeatLoader";
+import ImageViewer from "react-simple-image-viewer";
 
 import { onSearchMovies, onFetchNext } from "../../store/actions/search";
 
@@ -13,6 +20,8 @@ const SearchResult = () => {
   const targetRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [scrollY, setScrollY] = useState(0);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   useLayoutEffect(() => {
     if (targetRef.current) {
@@ -47,6 +56,16 @@ const SearchResult = () => {
     }
   };
 
+  const openImageViewer = useCallback((index) => {
+    setCurrentImage(index);
+    setIsViewerOpen(true);
+  }, []);
+
+  const closeImageViewer = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
+  };
+
   useEffect(() => {
     if (scrollY + 500 >= dimensions.height && results && !onPaging) {
       const maxPage = Math.ceil(parseInt(results.totalResults) / 10);
@@ -76,7 +95,12 @@ const SearchResult = () => {
               key={index}
               className='p-2 mb-2 group cursor-pointer transition duration-200 ease-in transform sm:hover:scale-105 hover:z-10 text-center xl:text-left'
             >
-              <img src={imgSrc} alt={result.Title} className='m-auto xl:m-0' />
+              <img
+                src={imgSrc}
+                alt={result.Title}
+                className='m-auto xl:m-0'
+                onClick={() => openImageViewer(index)}
+              />
               <h2 className='mt-1 text-2xl md:text-xl text-green-500 transition-all duration-100 ease-in-out group-hover:font-bold group-hover:text-green-500 hover:underline'>
                 <Link
                   to={{
@@ -95,6 +119,18 @@ const SearchResult = () => {
         <div className='flex items-center justify-center w-full -mt-10 mb-5'>
           <BeatLoader color='#10B981' />
         </div>
+      )}
+
+      {isViewerOpen && results && (
+        <ImageViewer
+          src={results.Search.map((r) =>
+            r.Poster.includes("http")
+              ? r.Poster
+              : "https://via.placeholder.com/300x420.png"
+          )}
+          currentIndex={currentImage}
+          onClose={closeImageViewer}
+        />
       )}
     </>
   );
