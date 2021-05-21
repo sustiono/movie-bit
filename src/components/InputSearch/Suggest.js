@@ -8,11 +8,12 @@ const Suggest = ({
   showSuggest,
   topCls = "top-52",
 }) => {
+  const display = showSuggest ? "flex" : "hidden";
+  const border =
+    !suggestions && !searchStatus && !isEmpty ? "border-0" : "border";
   return (
     <div
-      className={`absolute ${topCls} z-20 bg-white ${
-        showSuggest ? "flex" : "hidden"
-      } flex-col w-10/12 max-w-md rounded-lg mt-2 border border-gray-200 text-gray-500 items-center sm:max-w-xl lg:max-w-2x`}
+      className={`absolute ${topCls} z-20 bg-white ${display} flex-col w-10/12 max-w-md rounded-lg mt-2 ${border} border-gray-200 text-gray-500 items-center sm:max-w-xl lg:max-w-2x`}
     >
       {searchStatus && (
         <div className='flex items-center justify-center w-full h-32'>

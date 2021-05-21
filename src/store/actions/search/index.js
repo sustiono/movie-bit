@@ -124,6 +124,15 @@ const onFetchNext = (keyword, page) => {
   };
 };
 
+const resetState = () => {
+  return async (dispatch, getState) => {
+    batch(() => {
+      dispatch(setIsEmpty(false));
+      dispatch(setSuggestions(null));
+    });
+  };
+};
+
 export {
   onSearchMovies,
   onSetKeyword,
@@ -131,4 +140,5 @@ export {
   onFetchNext,
   onSearcSuggestions,
   setSuggestions,
+  resetState,
 };

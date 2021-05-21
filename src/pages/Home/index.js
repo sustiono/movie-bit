@@ -8,6 +8,7 @@ import {
   setSuggestions,
   onSetKeyword,
   onSearchMovies,
+  resetState,
 } from "../../store/actions/search";
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
   );
   const delayedOnChange = useCallback(
     _.debounce((q) => {
+      if (!q) dispatch(resetState());
       if (q.length >= 3) dispatch(onSearcSuggestions(q));
     }, 500),
     []

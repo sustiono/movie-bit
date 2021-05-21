@@ -15,7 +15,7 @@ import { onSearchMovies, onFetchNext } from "../../store/actions/search";
 const SearchResult = () => {
   const dispatch = useDispatch();
   const { keyword } = useParams();
-  const { results, onPaging } = useSelector((state) => state.search);
+  const { results, onPaging, isEmpty } = useSelector((state) => state.search);
 
   const targetRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -78,6 +78,13 @@ const SearchResult = () => {
       return;
     };
   }, [scrollY]);
+
+  if (!results)
+    return (
+      <div className='flex flex-col flex-grow items-center mt-10'>
+        <p className='text-gray-500'>Movie Not Found</p>
+      </div>
+    );
 
   return (
     <>

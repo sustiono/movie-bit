@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import InputSearch from "../InputSearch";
-import { onSearcSuggestions } from "../../store/actions/search";
+import { onSearcSuggestions, resetState } from "../../store/actions/search";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,6 +18,7 @@ const Header = () => {
 
   const delayedOnChange = useCallback(
     _.debounce((q) => {
+      if (!q) dispatch(resetState());
       if (q.length >= 3) dispatch(onSearcSuggestions(q));
     }, 500),
     []
