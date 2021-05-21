@@ -12,7 +12,7 @@ import {
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { suggestions, results, keyword, searchStatus } = useSelector(
+  const { suggestions, results, keyword, searchStatus, isEmpty } = useSelector(
     (state) => state.search
   );
   const delayedOnChange = useCallback(
@@ -40,6 +40,7 @@ const Home = () => {
   return (
     <>
       <InputSearch
+        isEmpty={isEmpty}
         keyword={keyword}
         suggestions={suggestions}
         searchStatus={searchStatus}

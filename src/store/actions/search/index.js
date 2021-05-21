@@ -30,18 +30,30 @@ const setSuggestions = (suggestions) => {
   };
 };
 
+const setIsEmpty = (isEmpty) => {
+  return {
+    isEmpty,
+    type: actionTypes.SEARCH.SET_IS_EMPTY,
+  };
+};
+
 const onSearcSuggestions = (keyword) => {
   return async (dispatch, getState) => {
     try {
       batch(() => {
         dispatch(onSetKeyword(keyword));
         dispatch(onSetSearchStatus(true));
+        dispatch(setIsEmpty(false));
       });
 
       getMovies(keyword)
         .then(function (response) {
           const { data } = response;
-          const results = data.Error ? null : data;
+          let results = data;
+          if (data.Error) {
+            results = null;
+            dispatch(setIsEmpty(true));
+          }
           batch(() => {
             dispatch(setSuggestions(results));
             dispatch(onSetSearchStatus(false));

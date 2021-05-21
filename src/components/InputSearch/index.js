@@ -9,10 +9,11 @@ import { history } from "../../utils";
 import { onSearchMovies, onSearcSuggestions } from "../../store/actions/search";
 
 const InputSearch = ({
-  onChange,
   keyword,
-  searchStatus,
+  isEmpty,
+  onChange,
   suggestions,
+  searchStatus,
   showImage = true,
   formClass = "mt-16 px-5",
 }) => {
@@ -76,6 +77,7 @@ const InputSearch = ({
       </div>
       {key.length >= 3 && (
         <Suggest
+          isEmpty={isEmpty}
           showSuggest={showSuggest}
           suggestions={suggestions}
           searchStatus={searchStatus}

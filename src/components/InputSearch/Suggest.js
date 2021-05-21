@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import BeatLoader from "react-spinners/BeatLoader";
 
 const Suggest = ({
+  isEmpty,
   searchStatus,
   suggestions,
   showSuggest,
@@ -18,7 +19,7 @@ const Suggest = ({
           <BeatLoader color='#10B981' />
         </div>
       )}
-      {!searchStatus && !suggestions && (
+      {isEmpty && (
         <div className='flex flex-col w-full items-center justify-center h-32'>
           <p>Not Found</p>
         </div>

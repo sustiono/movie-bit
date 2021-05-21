@@ -5,6 +5,7 @@ const actionTypes = {
     SET_RESULTS: "SET_RESULTS",
     SET_ON_PAGING: "SET_ON_PAGING",
     SET_SUGGESTIONS: "SET_SUGGESTIONS",
+    SET_IS_EMPTY: "SET_IS_EMPTY",
   },
 };
 

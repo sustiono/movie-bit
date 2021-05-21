@@ -6,6 +6,7 @@ const initialState = {
   suggestions: null,
   results: null,
   onPaging: false,
+  isEmpty: false,
 };
 let newState;
 const search = (state = initialState, action) => {
@@ -24,6 +25,9 @@ const search = (state = initialState, action) => {
       return newState;
     case actionTypes.SEARCH.SET_ON_PAGING:
       newState = { ...state, onPaging: action.onPaging };
+      return newState;
+    case actionTypes.SEARCH.SET_IS_EMPTY:
+      newState = { ...state, isEmpty: action.isEmpty };
       return newState;
     default:
       return state;
