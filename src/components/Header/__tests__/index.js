@@ -21,7 +21,7 @@ describe("Logo and Avatar", () => {
     expect(text).toBeInTheDocument();
   });
 
-  test("should have user 'Sustiono'", () => {
+  test("should have user name 'Sustiono'", () => {
     const history = createMemoryHistory();
     history.push("/");
     render(
@@ -33,5 +33,35 @@ describe("Logo and Avatar", () => {
     );
     const text = screen.getByText("Sustiono");
     expect(text).toBeInTheDocument();
+  });
+});
+
+describe("Input Search", () => {
+  test("should hide the search input", () => {
+    const history = createMemoryHistory();
+    history.push("/");
+    render(
+      <Provider store={store}>
+        <Router history={history}>
+          <Header />
+        </Router>
+      </Provider>
+    );
+    const placeholder = screen.getByTestId("search-input");
+    expect(placeholder).toHaveClass("hidden");
+  });
+
+  test("should show the search input", () => {
+    const history = createMemoryHistory();
+    history.push("/search/test");
+    render(
+      <Provider store={store}>
+        <Router history={history}>
+          <Header />
+        </Router>
+      </Provider>
+    );
+    const placeholder = screen.getByTestId("search-input");
+    expect(placeholder).toHaveClass("flex");
   });
 });

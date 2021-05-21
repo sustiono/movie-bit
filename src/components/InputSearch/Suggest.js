@@ -13,10 +13,14 @@ const Suggest = ({
     !suggestions && !searchStatus && !isEmpty ? "border-0" : "border";
   return (
     <div
+      data-testid='suggestions'
       className={`absolute ${topCls} z-20 bg-white ${display} flex-col w-10/12 max-w-md rounded-lg mt-2 ${border} border-gray-200 text-gray-500 items-center sm:max-w-xl lg:max-w-2x`}
     >
       {searchStatus && (
-        <div className='flex items-center justify-center w-full h-32'>
+        <div
+          data-testid='search-loading'
+          className='flex items-center justify-center w-full h-32'
+        >
           <BeatLoader color='#10B981' />
         </div>
       )}
@@ -32,7 +36,7 @@ const Suggest = ({
             const imgSrc = suggest.Poster.includes("http")
               ? suggest.Poster
               : "https://via.placeholder.com/23x30.png";
-            const slug = suggest.Title.toLowerCase().replaceAll(" ", "-");
+            const slug = suggest.Title.toLowerCase().replace(/\s/g, "-");
             return (
               <li
                 key={index}

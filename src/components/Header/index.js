@@ -34,7 +34,10 @@ const Header = () => {
           </Link>
         </h2>
 
-        <div className={`${inputSearchCls} flex w-full h-10`}>
+        <div
+          data-testid='search-input'
+          className={`${inputSearchCls} w-full h-10`}
+        >
           <InputSearch
             keyword={keyword}
             showImage={false}

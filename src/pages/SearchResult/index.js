@@ -93,7 +93,7 @@ const SearchResult = () => {
         className='px-5 my-10 sm:grid md:grid-cols-2 xl:grid-cols-5 min-h-full'
       >
         {results?.Search?.map((result, index) => {
-          const slug = result.Title.toLowerCase().replaceAll(" ", "-");
+          const slug = result.Title.toLowerCase().replace(/\s/g, "-");
           const imgSrc = result.Poster.includes("http")
             ? result.Poster
             : "https://via.placeholder.com/300x420.png";

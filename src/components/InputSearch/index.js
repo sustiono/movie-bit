@@ -19,7 +19,7 @@ const InputSearch = ({
 }) => {
   const dispatch = useDispatch();
   const [key, setKey] = useState(keyword);
-  const [showSuggest, setShowSuggest] = useState(false);
+  const [showSuggest, setShowSuggest] = useState(true);
 
   const location = useLocation();
   const targetRef = useRef();
@@ -45,8 +45,9 @@ const InputSearch = ({
 
   return (
     <form
-      className={`flex flex-col items-center ${formClass} md:mt-13 m-auto w-10/12 relative h-full`}
       onSubmit={onSubmit}
+      data-testid='form-input-search'
+      className={`flex flex-col items-center ${formClass} md:mt-13 m-auto w-10/12 relative h-full`}
     >
       {showImage && <img src={MovieNight} alt='movie' className='h-36 mb-5' />}
       <div className='flex w-full h-full max-w-md rounded-full border border-gray-200 hover:border-green-500 focus-within:border-green-500 text-gray-500 focus-within:text-green-500 hover:text-green-500 px-5 py-3 items-center sm:max-w-xl lg:max-w-2xl group'>
@@ -55,6 +56,7 @@ const InputSearch = ({
           type='text'
           value={key}
           ref={targetRef}
+          data-testid='input-search'
           placeholder='Type title...'
           className='flex-grow focus:outline-none text-gray-500'
           onFocus={(e) => {
@@ -84,6 +86,7 @@ const InputSearch = ({
           topCls={showImage ? "top-52" : "top-10"}
         />
       )}
+      <button type='submit' className='hidden' />
     </form>
   );
 };
